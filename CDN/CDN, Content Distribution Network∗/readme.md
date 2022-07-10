@@ -115,3 +115,25 @@ Major criteria used to choose a proper replica server:
   * This scheme has the potential to scale up well with the growth of the Internet.
 * **Peer-to-Peer Routing**: no nodes have the complete global information in time about the network. The problem of routing requests efficiently in a distributed manner without incurring high overhead of propagating the routing information is a major research concern.
 
+## 3. Server Placement
+In this section, we survey **the approaches to server placement** described in the literature along with their **contributions and inadequacies**.
+
+**Key points**:
+* to decide where on the Internet to place the servers,
+* which store replicates of objects.
+
+**metrics**:
+* **latency**: the average content access latency perceived by clients
+* **bandwidth**: the overall network bandwidth consumption for transferring replicated documents from servers to clients.
+
+### 3.1 Theoretical Approaches
+**Center placement problem definition:** for the placement of a given number of centers, one could consider
+the metric (P<sub>minK</sub>) of minimizing the maximum distance between a node and the nearest center. This problem is also known as the minimum K-center problem [JJJ+00].
+
+**Notations**:
+* the network is represented by a graph G(V, E)
+* V is the set of nodes
+* E ⊆ V × V is the set of links
+* use N = |V | to denote the number of nodes in G
+* use T to denote the number of centers we place in the graph
+* dG(u, v) to denote the distance between nodes u and v in the graph G

@@ -137,3 +137,15 @@ the metric (P<sub>minK</sub>) of minimizing the maximum distance between a node 
 * use N = |V | to denote the number of nodes in G
 * use T to denote the number of centers we place in the graph
 * dG(u, v) to denote the distance between nodes u and v in the graph G
+
+### 3.1.1 k-HST
+The k-HST algorithm consists of two phases:
+1. the graph is recursively partitioned
+   1. A node is arbitrarily selected from the current (parent) partition, all the nodes that are within a random radius from this node form a new (child) partition. <br>The value of the radius of the child partition is a factor of k smaller than the diameter of the parent partition.
+
+      > **图论-半径**：一张图的半径 r 被定义为所有顶点偏心率中最小的偏心率<br>
+      > **图论-偏心率**：一个顶点v的偏心率被定义为v和其它顶点的距离的最大值，也即是这个点和离其最远点的距离<br>
+      > 来源：https://zh.m.wikipedia.org/zh-hans/%E8%B7%9D%E7%A6%BB_(%E5%9B%BE%E8%AE%BA)
+   2. This process recurs for each partition, until each node is in a partition of its own.
+2. a virtual node is assigned to each of the partitions at each level
+   1. The length of the links from a virtual node to its children is half of the partition diameter.

@@ -197,6 +197,8 @@ a graph G = (V, E)
 * An **independent set** is a subset V ′ ⊆ V such that, for all u, v ∈ V ′, the edge (u, v) is not in E.
   * An independent set of G<sup>2</sup> is thus a set of nodes in G that are at least three hops apart in G.
 
+💡实例
+
 假设图G邻接矩阵m为：
 ```
 0, 0, 1, 0, 0, 0, 0
@@ -247,3 +249,26 @@ Jamin et al. [JJR+01] discussed a more general algorithm: ℓ-backtracking greed
 A topology-informed placement strategy, called "Transit Node", was first discussed by Jamin et al. [JJR+01].  Assuming that nodes with the highest outdegrees2 can reach more nodes with smaller latency, we place servers on candidate hosts in descending order of outdegrees.
 
 The result shows that the transit node heuristic can perform almost as well as the greedy placement, and that using router-level topology information results in better performance than that achieved by only exploiting ASlevel topology knowledge.
+
+## 4. Request Service
+Two steps of operations are involved in servicing a request in a CDN:
+* `server location`: locating a suitable server holding the replicates of the requested object
+* `request routing`: redirecting the request to the selected server
+
+### 4.1 Server Location
+The first choice about server location strategy is whether server location information is gathered in reaction to client requests for nearby servers, e.g., using a multicast scheme, or whether this information is gathered proactively.
+
+The next choice is whether support should be provided by the routing layer.
+
+**Reactive vs. proactive gathering**
+
+given a multicast group joined by all instances of a particular type of server, one can choose the server that responds most quickly to a group multicast message. This approach wastes the precious network bandwidth.
+
+In contrast, in a proactive scheme, some agents, such as routers or dedicated applications, gather the network and server information by sending probe messages to the candidate servers or collect load information dispatched by servers, and maintain the server location or load database.
+
+**Routing layer vs. application layer**
+
+Partridge et al. [PMM93] proposed an anycasting mechanism, particularly in IP layer, which attempts to deliver a request to one nearby server. However, a downside is that IP anycasting assumes that all servers provide equal service3.
+
+In contrast to IP anycasting, an application-level location service could include server quality into the selection criterion, after a handful of nearby servers have been selected from the database.
+

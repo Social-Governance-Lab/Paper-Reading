@@ -272,3 +272,9 @@ Partridge et al. [PMM93] proposed an anycasting mechanism, particularly in IP la
 
 In contrast to IP anycasting, an application-level location service could include server quality into the selection criterion, after a handful of nearby servers have been selected from the database.
 
+**Polling routing table vs. network probing**
+
+By polling routing tables, we can build a connectivity graph from a measurement beacon to one server by retrieving the local routing table, determining the next hop along the path, retrieving the routing table for that router, and so on, until we reach the destination.
+
+In network probing approach, some measurement servers are responsible to explore the route to each of the replica servers by probing the servers.
+

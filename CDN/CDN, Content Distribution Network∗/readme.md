@@ -278,3 +278,31 @@ By polling routing tables, we can build a connectivity graph from a measurement 
 
 In network probing approach, some measurement servers are responsible to explore the route to each of the replica servers by probing the servers.
 
+### 4.2 Request Routing
+#### 4.2.1 Client Multiplexing
+In this approach, the client (Web browser or a proxy server) obtains the addresses of a set of physical replica servers and chooses one to send its request to. Three main mechanisms belong in this category.
+
+**1. The DNS server of the service provider returns the IP addresses of servers holding a replica of the object.**
+
+The client's DNS resolver chooses a server among these.
+
+**How to dicide**:
+* issue probes to the servers and choose based on response times to these probes
+* collect reports from the clients on performance of past accesses to these servers.
+
+**Shortcomings**:
+* relies on clients using a customized DNS resolver.
+  * If this resolver relies on client performance reports, then the client (i.e., browser or proxy) software must be modified as well
+* the DNS infrastructure relies heavily on DNS response caching to cope with its load.
+  * replica server sets cannot be changed frequently without the danger of resolvers using stale replica server sets.
+* moves the stability bottleneck to the DNS infrastructure
+
+####  4.2.2 DNS Indirection
+Web site's DNS server to map a host domain name to a set of IP addresses and choose one of them for every client query.
+
+Unfortunately, DNS system was designed for mostly an append-only database of existing mappings between a host name and an IP address that rarely ever changes.
+
+#### 4.2.3 HTTP Redirection
+HTTP protocols allow a Web server to respond to a client request with a special message that tells the client to re-submit its request to another server.
+
+A disadvantage is that this mechanism is quite heavyweight. Not only does it introduce an extra message round-trip into request processing, but also this round-trip is done over HTTP, which uses the expensive TCP protocol as the transport layer.

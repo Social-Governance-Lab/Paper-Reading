@@ -231,3 +231,19 @@ G<sup>2</sup>的无关集合邻接矩阵则为：
 即全连接图减去G与G<sup>2</sup>
 
 TODO
+### 3.2 Heuristic Solutions
+**not practical**: The theoretical solutions described above are either computationally expensive or do not consider the characteristics of the network and workload.
+
+#### 3.2.1 Greedy Algorithm
+A greedy algorithm was proposed by P. Krishnan et al. [KRS00] for the cache location problem. Qiu et al. [QPV01] adapted this algorithm for the server placement problem in CDN.
+
+Suppose it needs to choose M servers among N potential sites. It chooses one site at a time. picks the site that yields the lowest cost, e.g., the bandwidth consumption. The iteration continues until M servers have been chosen.
+
+Jamin et al. [JJR+01] discussed a more general algorithm: ℓ-backtracking greedy algorithm. removing ℓ of the already placed servers and replacing them with ℓ + 1 new servers
+
+...They utilized two types of network topologies: one by simulating the network as random graph and another one by deriving the real topology from BGP routing table. Under this experimental configuration, the greedy algorithm performs remarkably well (within a factor of 1.1-1.5) compared to the computationally expensive optimal solution and the computation needed is several magnitudes less.
+
+#### 3.2.2 Topology-informed Placement Strategy
+A topology-informed placement strategy, called "Transit Node", was first discussed by Jamin et al. [JJR+01].  Assuming that nodes with the highest outdegrees2 can reach more nodes with smaller latency, we place servers on candidate hosts in descending order of outdegrees.
+
+The result shows that the transit node heuristic can perform almost as well as the greedy placement, and that using router-level topology information results in better performance than that achieved by only exploiting ASlevel topology knowledge.

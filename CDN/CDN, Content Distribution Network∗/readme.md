@@ -179,3 +179,55 @@ begin
   L ← L ∪ Nh
 end
 ```
+The algorithm pushes the centers down the tree until it discovers a partition with diameter ≤ D. The number of partitions, |L|, is the minimum number of centers required to satisfy the performance metric Pdiam.
+
+##### limitations
+
+#### 3.1.2 Minimum K-center
+**NP-complete, but solvable**
+
+The minimum K-center problem is NP-complete. However, if we are willing to tolerate inaccuracies within a factor of 2, i.e., the maximum distance between a node and the nearest center being no worse than twice the maximum in the optimal case, the problem is solvable in O(N|E|) [Vaz99] as follows.
+
+a graph G = (V, E)
+* all its edges arranged in non-decreasing order by edge cost
+* Gi = (V, Ei), where Ei = {e1, e2, ...ei}
+* G<sup>2</sup>: A square graph of G, is the graph containing V and edge (u, v) wherever there is a path between u and v in G of at most two hops.
+  * u ≠ v — hence some edges in G<sup>2</sup> are pseudo edges, in that they do not exist in G.
+  * 💡 n次方图的含义为，u,v间长度为n的路径的存在性，2次方图对应的矩阵，如果存在不为零的元素，则代表存在长度为2的一条路径，使对应的两个点连通。
+* An **independent set** is a subset V ′ ⊆ V such that, for all u, v ∈ V ′, the edge (u, v) is not in E.
+  * An independent set of G<sup>2</sup> is thus a set of nodes in G that are at least three hops apart in G.
+
+假设图G邻接矩阵m为：
+```
+0, 0, 1, 0, 0, 0, 0
+0, 0, 0, 0, 0, 1, 0
+1, 0, 0, 1, 0, 0, 0
+0, 0, 1, 0, 0, 0, 1
+0, 0, 0, 0, 0, 1, 0
+0, 1, 0, 0, 1, 0, 1
+0, 0, 0, 1, 0, 1, 0
+```
+G<sup>2</sup>邻接矩阵则为：
+```
+m square
+0, 0, 0, 1, 0, 0, 0
+0, 0, 0, 0, 1, 0, 1
+0, 0, 0, 0, 0, 0, 1
+1, 0, 0, 0, 0, 1, 0
+0, 1, 0, 0, 0, 0, 1
+0, 0, 0, 1, 0, 0, 0
+0, 1, 1, 0, 1, 0, 0
+```
+G<sup>2</sup>的无关集合邻接矩阵则为：
+```
+0, 1, 0, 0, 1, 1, 1
+1, 0, 1, 1, 0, 0, 0
+0, 1, 0, 0, 1, 1, 0
+0, 1, 0, 0, 1, 0, 0
+1, 0, 1, 1, 0, 0, 0
+1, 0, 1, 0, 0, 0, 0
+1, 0, 0, 0, 0, 0, 0
+```
+即全连接图减去G与G<sup>2</sup>
+
+TODO

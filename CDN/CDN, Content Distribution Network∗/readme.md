@@ -428,3 +428,9 @@ When a node n looks for the node holding key k,
 * Chord needs specific mechanism to heal partitioned rings and security mechanism to tackle safety issues
   * e.g., malicious or buggy set of participants, which may present an incorrect view of the Chord ring.
 * anonymity of participant is not taken into account in Chord.
+
+## 5. An Example of CDN – Akamai
+TODO
+
+## 6. Iridium: A Fast Content Location Service for Large-Scale Peerto-Peer Systems
+TODO

@@ -306,3 +306,44 @@ Unfortunately, DNS system was designed for mostly an append-only database of exi
 HTTP protocols allow a Web server to respond to a client request with a special message that tells the client to re-submit its request to another server.
 
 A disadvantage is that this mechanism is quite heavyweight. Not only does it introduce an extra message round-trip into request processing, but also this round-trip is done over HTTP, which uses the expensive TCP protocol as the transport layer.
+
+### 4.3 Anycasting
+IP anycasting assumes that the same IP address is assigned to a set of hosts, and each IP router has in its routing table a path to the host that is the closest to this router. Thus, different IP routers have paths to different hosts with the same IP address. Figure 4 illustrates IP anycasting.
+
+![](./Figure_4.png)
+
+**Anycasting using unicast routing protocols is not scalable**
+
+routing anycast packets using the unicast routing protocols requires advertising each global anycast address separately. This requirement causes the routing tables to grow proportionally to the number of all global anycast groups in the entire Internet, and hence does not scale.
+
+**global IP anycast (GIA)**
+
+...
+
+#### 4.3.2 Application-Level Anycasting
+* the network layer is able to effectively determine the shortest path, it is well suited for the IP anycasting service that selects the closest server based upon a shortest path metric such as hop count.
+* an application layer approach is better suited at handling a variety of other metrics such as server throughput
+
+**1. Fei et al. [FBZA98]**
+
+In their design, the service consists of a set of anycast resolvers, which performs the anycast domain names (ADN) to IP address mapping. 
+
+**Benefits:**
+* A **key feature** of the system is the presence of **a metric database**, associated with each anycast resolver, containing performance data about replica servers.
+
+**Downsides:**
+* However, deploying such a system requires the changes to the servers as well as the clients, which is prohibitively costly considering the possibly huge number of servers and clients.
+
+**2. Adjie-Winoto et al. [AWSBL99]**
+
+It proposed an **intentional naming system (INS)**, which is designed as a resource discovery and service location system for dynamic and mobile networks of devices and computers.
+
+**Benefits:**
+* INS uses a simple language based on attributes and values for its names, which enable the service to be specified precisely
+
+**Downsides:**
+* INS is not designed to provide global reachability information, and the attribute-based naming is less scalable than a hierarchical namespace provided by URL.
+
+**3. Gritter et al. [GC01]**
+
+...

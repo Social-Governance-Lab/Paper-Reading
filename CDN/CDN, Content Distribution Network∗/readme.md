@@ -432,5 +432,19 @@ When a node n looks for the node holding key k,
 ## 5. An Example of CDN – Akamai
 TODO
 
+### 5.2 The Akamai DNS System
+The Akamai DNS system is implemented as a 2-level hierarchy of DNS servers:
+* Each **HLDNS**(high-level) server is responsible for directing each DNS query it receives to a LLDNS server that is close to the requesting client.
+* The **LLDNS** servers perform the final resolution of server name to IP address, directing each client to the Akamai replica server that is optimally located to serve the client's requests.
+
+**resolve procedure: a browser makes a request for `a9.g.akamai.net`**
+
+its local DNS server
+   
+(In the absence of a cached response, the local DNS server resolves the server name by using iterative DNS queries):
+1. contacts a **.net root** server, responds with a list of ❓ Akamai HLDNS servers.
+2. the local DNS server contacts **one of these HLDNS servers**, it receives a list of LLDNS servers that are close to it.
+3. It then contacts **one of the LLDNS servers**, which returns the IP address of the optimal replica server for this request.
+
+
 ## 6. Iridium: A Fast Content Location Service for Large-Scale Peerto-Peer Systems
-TODO

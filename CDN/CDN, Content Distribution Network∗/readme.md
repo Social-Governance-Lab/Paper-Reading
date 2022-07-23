@@ -430,7 +430,20 @@ When a node n looks for the node holding key k,
 * anonymity of participant is not taken into account in Chord.
 
 ## 5. An Example of CDN – Akamai
-TODO
+**Akamai also built its own DNS network**. This Akamai DNS network ensures fast delivery of the requested content by resolving the host name of the URL for the requested content to the IP address of the Akamai replica server
+
+**Two major processes involved in the operation of Akamai**:
+* How to direct Internet traffic to the Akamai server network
+* How to direct requests to the suitable Akamai replica servers
+
+### 5.1 ARLs and Akamaizer
+**Akamaizer** is the tool that tags embedded Web objects for delivery via the Akamai network, transforming ("akamaizing") their URLs into **Akamai Resource Locators (ARLs)**.
+
+A typical embedded object URL such as http://www.foo.com/a.gif would be transformed into the following ARL:
+
+![ARL](ARL.jpg)
+
+* `serial number`: identifies a virtual "bucket" of content – a group of akamaized objects that will always be served from the same set of Akamai replica servers.（一组数据由一组副本服务器共同服务）
 
 ### 5.2 The Akamai DNS System
 The Akamai DNS system is implemented as a 2-level hierarchy of DNS servers:

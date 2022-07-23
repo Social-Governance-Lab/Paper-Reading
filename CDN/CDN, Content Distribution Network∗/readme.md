@@ -461,3 +461,75 @@ its local DNS server
 
 
 ## 6. Iridium: A Fast Content Location Service for Large-Scale Peerto-Peer Systems
+### 6.1 Related Work
+The present routing protocols or services in peer-to-peer systems can be roughly classified into three categories *according to the number of nodes performing the routing operation.*
+
+* A central node servicing all the routing requests in the system:
+  * This centralized structure can **not scale well** for large system and is **error prone**
+  * A more significant demerit of this structure is that the system using this routing structure can be easily censored
+* Some peer-to-peer systems choose **a small set of "superpeers" or "supernodes"** by consensus to service the routing requests in the system rather than replying on a central node for routing.
+* A completely distributed structure where each node participates in the routing procedure. Taking O(logN ) overlay hops to finish a request
+
+### 6.2 System Structure
+#### Hash Function
+Essentially, Iridium provides distributed computation of a hash function **mapping keys to nodes** responsible for them within constant time.
+
+It uses consistent hashing [KLL+97], which has several good properties:
+* high probability the hash function **balances load**.
+* when an Nth node joins (or leaves) the network, only an O(1/N ) fraction of the keys are moved to a different location.
+
+**Fixed length key**: The consistent hash function assigns each node and key an m-bit identif ier using a base hash function such as SHA-1 [sha95].
+* A node's identifier is chosen by hashing the node's IP address
+* A key identifier is calculated by hashing the key
+
+*We will use the term "key" to refer to both the original key and its identifier. Similarly, the term "node" will refer to both the node and its identifier under the hash function.*
+#### Two Types of Nodes in Iridium
+* **Regular nodes store the keys**. The keys are assigned by using the consistent hashing as follows:
+  * All the identifiers are ordered in an identifier circle modulo 2<sup>m</sup>.
+  * `successor node`: Key k is assigned to the first regular node whose identifier is equal to or follows k in the identifier space. *This regular node is called the successor node of key k.*
+  * `successor node set`: To enhance the reliability, a key k is stored in its successor node and the p − 1 regular nodes that follow key k's successor node immediately.
+* **Supernodes store the node identifiers assigned by consistent hashing**. A node n is assigned to the first supernode whose identifier is equal to or follows n in the supernode identifier space.
+  * `associated supernode`: This supernode is called the associated supernode of node n.
+  * `bound set`: we call the regular nodes that are associated with supernode s the bound set of s, denoted as b(s).
+  * `associated supernode set`: a node n is assigned to its associated supernode and the q − 1 supernodes that follow node n's associated supernode immediately. We name these q supernodes the node n's associated supernode set.
+
+*p and q are tunable system parameters*
+
+* We denote the number of supernodes as f(N)
+* The average number of nodes each supernode stores as B(N)
+* B(N) is equal to q ∗ N/f(N)
+
+#### Addressing
+A node i is looking for a key k（💡应该指节点代理客户端进行寻址的过程）:
+1. It first randomly selects one supernode, say I, from its associated supernode set to send a query to asking for the location of key k.
+2. Supernode I checks which supernode is the clockwise closest supernode to key k in the identifier space and forwards the query to that supernode, say J.
+3. Supernode J then looks up which regular nodes in its bound set are holding k and randomly chooses one, say j, to deliver the query to.
+
+**For example**: node 2 looks up for key 6
+
+![Figure_9](./Figure_9.png)
+
+**💡标注：**
+* 黑色圆：普通节点
+* 白色圆：超级节点
+* 方框：key
+
+1. It first sends a query to its associated supernode 4.
+2. 4 then sends this query to supernode 10, *which is the clockwise closest supernode to key 6 in the identifier space.*
+3. Supernode 10 furthers the query to regular node 8, which is the successor node of key 6 and stores the key 6.
+
+### 6.3 System Maintenance
+#### 6.3.1 Node Joins
+1. It needs to find out its associated supernode first.(by flooding or broadcasting request)
+2. It queries the supernode for its associated supernode set. It registers itself to its associated supernode set by sending information to these supernodes including its identifier and address.
+#### 6.3.2 Supernode Selection
+**When to choose a new supernode out of the regular nodes**: 
+* The number of nodes in the system exceeds certain threshold
+* The routing core consisting of the supernodes is overloaded
+
+**Witch one to choose**:
+* the most loaded one
+* the one having the largest bound set
+
+#### 6.3.3 Node Leaves
+

@@ -531,5 +531,24 @@ A node i is looking for a key k（💡应该指节点代理客户端进行寻址
 * the most loaded one
 * the one having the largest bound set
 
+We then select a supernode candidate from the bound set.
 #### 6.3.3 Node Leaves
+##### Regular nodes
+
+**How information were organised(supernode):** A regular node updates its identifier and address stored in its associated supernode set either by explicitly sending message to its associated supernode set periodically. The supernode simply cache these information constructing the bound set
+
+**How information were updated(supernode):**
+* When a regular node leaves, it notifies its associated supernode set its exit so that the supernodes can
+  * update their bound set.
+  * It also needs to migrate the keys it stores to its successor node.
+* When a regular node dies
+  * its associated supernode set will detect its death by the timeout of the corresponding regular node information.
+
+##### Supernodes
+* when a supernode leaves
+  * it will migrate its bound set to its living successor supernode.
+  * it has to tell the regular nodes to add one more successor supernode to their associated supernode set to keep the size of the set constant.
+* When a supernode dies, we take a lazy update approach to help detect the death of a supernode but avoid the unnecessary message transmission
+  1. After a supernode dies, as the living supernodes do not know about its death, they will forward the requests for the key held by the bound set of the dead supernode to the dead supernode as if it was alive.
+  2. the living supernodes forwarding the requests will find out that one supernode is down and update their supernode information accordingly
 

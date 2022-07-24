@@ -568,3 +568,11 @@ We then select a supernode candidate from the bound set.
   * To be a first approximation, supposing N is 107, f(N) chosen as N 1/2, q as 10 and each node information needs 12 bytes (6 bytes for IP address and 6 for identifier), each supernode needs only about 760 KB to store the whole bound set as well as the information about all the supernodes.
 * the amount of extra traffic supernodes may incur
   * We need to perform extensive simulation study under different functions of f(N).
+
+## 7. Summary
+**limitations:**
+The number of content providers turning to CDNs to better service their customers is growing rapidly. These two facts open several new issues to the design and architecture of CDNs in the future, such as:
+* support for streaming content or real-time events
+* scalability
+* built-in security mechanism
+* and so forth

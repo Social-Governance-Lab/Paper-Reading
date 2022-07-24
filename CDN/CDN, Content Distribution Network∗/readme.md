@@ -552,3 +552,19 @@ We then select a supernode candidate from the bound set.
   1. After a supernode dies, as the living supernodes do not know about its death, they will forward the requests for the key held by the bound set of the dead supernode to the dead supernode as if it was alive.
   2. the living supernodes forwarding the requests will find out that one supernode is down and update their supernode information accordingly
 
+### 6.4 Some Issues
+#### Reliability
+**Problems:** 
+* When a regular node dies, the keys held by this node will lose.
+* If a supernode dies, we lose information about the bound set of this supernode.
+
+**To guarantee reliability:** We replicate information needed for forwarding queries. In concrete
+* **Each key is replicated in p regular nodes.** The queries for a key are almost equally shared by the regular nodes holding the key.
+* **each regular node is associated with q supernodes** and anyone of these supernodes has the same probability to forward the query to or from the regular node.
+
+#### Scalability
+**Problems:**
+* the space each supernode has is limited (not a problem in practice)
+  * To be a first approximation, supposing N is 107, f(N) chosen as N 1/2, q as 10 and each node information needs 12 bytes (6 bytes for IP address and 6 for identifier), each supernode needs only about 760 KB to store the whole bound set as well as the information about all the supernodes.
+* the amount of extra traffic supernodes may incur
+  * We need to perform extensive simulation study under different functions of f(N).
